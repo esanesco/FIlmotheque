@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TP ENI</title>
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/tp-form.css">
+    <link rel="icon" href="/images/logoENI.png">
+</head>
+<body>
+<!-- Navbar -->
+<header>
+    <h1 id="nav-title">
+        <a href="/">Filmothèque</a>
+    </h1>
+    <nav>
+        <ul>
+            <li><a href="/movies">Films</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <form>
+        <h1>Détail du film</h1>
+        <ul class="flex-outer">
+            <li><label for="inputGenre">Genre : </label> <input disabled
+                                                                type="text" id="inputGenre" data-th-value="${movie.genre.label}">
+            </li>
+            <li><label for="inputYear">Année : </label> <input disabled
+                                                               type="text" id="inputYear" data-th-value="${movie.year}"></li>
+            <li><label for="inputTitle">Titre : </label> <input disabled
+                                                                type="text" id="inputTitle" data-th-value="${movie.title}">
+            </li>
+            <li><label for="inputDirector">Réalisateur : </label> <input
+                    disabled type="text" id="inputDirector"
+                    data-th-value="${movie.director.firstName} + ' ' + ${movie.director.lastName}">
+            </li>
+            <li><label for="inputDuration">Durée : </label> <input disabled
+                                                                   type="text" id="inputDuration" data-th-value="${movie.duration}">
+            </li>
+            <li data-th-if="${not #lists.isEmpty(movie.actors)}"><label
+                    for="selectActors">Acteur(s) : </label> <select disabled
+                                                                    id="selectActors" multiple>
+                <option data-th-each="current : ${movie.actors}"
+                        data-th-text="'- ' + ${current.firstName} + ' ' + ${current.lastName}"></option>
+            </select></li>
+            <li><label for="taSynopsis">Synopsis : </label> <textarea
+                    rows="3" id="taSynopsis" disabled data-th-text="${movie.synopsis}">
+						</textarea>
+            </li>
+        </ul>
+    </form>
+</main>
+</body>
+</html>
