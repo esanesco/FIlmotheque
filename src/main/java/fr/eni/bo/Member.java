@@ -1,10 +1,17 @@
 package fr.eni.bo;
 
+import javax.persistence.*;
+
+@Entity
 public class Member {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String lastName;
     private String firstName;
+
+    @Column(nullable = false, unique = true)
     private String login;
     private String password;
     private boolean isAdmin;

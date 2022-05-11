@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>TP ENI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/general.css">
     <link rel="stylesheet" href="/css/tp-form.css">
     <link rel="icon" href="/images/logoENI.png">
@@ -16,6 +18,13 @@
     <nav>
         <ul>
             <li><a href="/movies">Films</a></li>
+            <li><a href="/movies/create">Nouveau Film</a></li>
+            <th:block data-th-if="${userSession == null}">
+                <li><a href="/login">Connexion</a></li>
+            </th:block>
+            <th:block data-th-if="${userSession != null}">
+                <li><a href="/logout">Déconnexion</a></li>
+            </th:block>
         </ul>
     </nav>
 </header>
@@ -47,6 +56,14 @@
             <li><label for="taSynopsis">Synopsis : </label> <textarea
                     rows="3" id="taSynopsis" disabled data-th-text="${movie.synopsis}">
 						</textarea>
+            </li>
+            <li>
+            <li data-th-if="${not #lists.isEmpty(movie.opinions)}"><label>Commentaire(s) : </label>
+                <ul>
+                    <li data-th-each="current : ${movie.opinions}" data-th-text="${current.comment + '['+current.note+'] - ('+current.member.firstName+')'}"></li>
+
+                </ul>
+
             </li>
         </ul>
     </form>

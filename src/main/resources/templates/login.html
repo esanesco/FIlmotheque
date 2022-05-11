@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TP ENI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/tp-form.css">
+    <link rel="icon" href="/images/logoEni.png">
+</head>
+<body>
+<!-- Navbar -->
+<header>
+    <h1 id="nav-title">
+        <a href="/">Filmothèque</a>
+        <th:block data-th-if="${userSession != null}">
+            <span data-th-text="'['+ ${userSession.firstName}+']'"></span>
+        </th:block>
+    </h1>
+    <nav>
+        <ul>
+            <li><a href="/movies">Films</a></li>
+            <th:block data-th-if="${userSession == null}">
+            <li><a href="/login">Connexion</a></li>
+            </th:block>
+            <th:block data-th-if="${userSession != null}">
+            <li><a href="/logout">Déconnexion</a></li>
+            </th:block>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div th:if="${messageSucces}" class="alert alert-success text-center">
+        [[${messageSucces}]]
+    </div><div th:if="${messageError}" class="alert alert-danger text-center">
+    [[${messageError}]]
+</div>
+    <form action="/login" method="post">
+        <h1>Se connecter</h1>
+        <ul class="flex-outer">
+            <li><label for="inputLogin">Pseudo : </label> <input required
+                                                                 type="text" id="inputLogin" name="email"></li>
+            <li><label for="inputPwd">Mot de Passe : </label> <input
+                    required type="password" id="inputPwd" name="password"></li>
+            <li>
+                <button type="submit">Connecter</button>
+            </li>
+        </ul>
+    </form>
+</main>
+</body>
+</html>

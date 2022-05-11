@@ -2,8 +2,8 @@ package fr.eni.service;
 
 import fr.eni.bo.Genre;
 import fr.eni.bo.Movie;
+import fr.eni.bo.Opinion;
 import fr.eni.bo.Participant;
-
 import java.util.List;
 
 public interface MovieService {
@@ -21,4 +21,7 @@ public interface MovieService {
 
     void saveMovie(Movie movie);
 
+    void saveOpinion(Opinion opinion, Movie selectedMovie);
+
+    List<Opinion> getOpinionByMovie(long idMovie);
 }

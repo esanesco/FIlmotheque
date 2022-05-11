@@ -1,28 +1,76 @@
 package fr.eni.bo;
 
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
+
+@Entity
 public class Movie {
 
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotBlank
+    @Size(max = 250)
+    @Column(length = 250, nullable = false)
     private String title;
+
+    @Min(value = 1990)
     private int year;
+
+    @Min(value = 1)
     private int duration;
+
+    @NotBlank
+    @Size(min = 20, max = 250)
+    @Column(length = 250, nullable = false)
     private String synopsis;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
     private Participant director;
+
+
+    @ManyToMany
     private List<Participant> actors;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
     private Genre genre;
-    private List<Opinion> opinion;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "movie_id")
+    private List<Opinion> opinions;
 
     public Movie() {
+        actors = new ArrayList<>();
+        opinions = new ArrayList<>();
     }
 
     public Movie(long id, String title, int year, int duration, String synopsis) {
+        this();
         this.id = id;
         this.title = title;
         this.year = year;
         this.duration = duration;
         this.synopsis = synopsis;
+    }
+
+    public Movie(long id, String title, int year, int duration, String synopsis, Participant director, Genre genre) {
+        this();
+        this.id = id;
+        this.title = title;
+        this.year = year;
+        this.duration = duration;
+        this.synopsis = synopsis;
+        this.director = director;
+        this.genre = genre;
     }
 
     public long getId() {
@@ -74,6 +122,9 @@ public class Movie {
     }
 
     public List<Participant> getActors() {
+        if (actors == null) {
+            actors = new ArrayList<>();
+        }
         return actors;
     }
 
@@ -89,12 +140,15 @@ public class Movie {
         this.genre = genre;
     }
 
-    public List<Opinion> getOpinion() {
-        return opinion;
+    public List<Opinion> getOpinions() {
+        if (opinions == null) {
+            opinions = new ArrayList<>();
+        }
+        return opinions;
     }
 
-    public void setOpinion(List<Opinion> opinion) {
-        this.opinion = opinion;
+    public void setOpinions(List<Opinion> opinions) {
+        this.opinions = opinions;
     }
 
     @Override

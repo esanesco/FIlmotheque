@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TP ENI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" href="/css/tp-table.css">
+    <link rel="icon" href="/images/logoENI.png">
+</head>
+<body>
+<!-- Navbar -->
+<header>
+    <h1 id="nav-title">
+        <a href="/">Filmothèque</a>
+        <th:block data-th-if="${userSession != null}">
+            <span data-th-text="'['+ ${userSession.firstName}+']'"></span>
+        </th:block>
+    </h1>
+    <nav>
+        <ul>
+            <li><a href="/movies">Films</a></li>
+            <li><a href="/movies/create">Nouveau Film</a></li>
+            <th:block data-th-if="${userSession == null}">
+                <li><a href="/login">Connexion</a></li>
+            </th:block>
+            <th:block data-th-if="${userSession != null}">
+                <li><a href="/logout">Déconnexion</a></li>
+            </th:block>
+        </ul>
+    </nav>
+</header>
+<main>
+    <h1>Les films de l'ENI</h1>
+    <div th:if="${messageSucces}" class="alert alert-success text-center">
+        [[${messageSucces}]]
+    </div><div th:if="${messageError}" class="alert alert-danger text-center">
+    [[${messageError}]]
+</div>
+    <form data-th-action="@{/movies/create}" data-th-object="${movie}"
+          method="post">
+        <h1>Création d'un film</h1>
+        <!-- Affichage du message d'erreur général -->
+        <div class="cards" data-th-if="${#fields.hasErrors('*')}">
+            <h2>Veuillez vérifier vos champs</h2>
+        </div>
+        <div class="cards" data-th-if="${not #lists.isEmpty(be)}">
+            <span data-th-each="current : ${be}" data-th-text="${current}"></span>
+        </div>
+        <ul class="flex-outer">
+            <li><label for="inputTitle">Titre : </label> <input required
+                                                                type="text" id="inputTitle" data-th-field="*{title}">
+                <!-- Affichage des messages d'erreur par champs -->
+                <div class="cards" data-th-if="${#fields.hasErrors('title')}">
+                    <span data-th-errors="*{title}"></span>
+                </div>
+            </li>
+            <li><label for="inputYear">Année de sortie : </label> <input
+                    required type="number" id="inputYear" data-th-field="*{year}" min="1900" max="2100">
+                <!-- Affichage des messages d'erreur par champs -->
+                <div class="cards" data-th-if="${#fields.hasErrors('year')}">
+                    <span data-th-errors="*{year}"></span>
+                </div>
+            </li>
+
+            <li><label for="selectDirector">Réalisateur : </label> <select
+                    id="selectDirector" required data-th-field="*{director}">
+                <option data-th-each="current : ${movieParticipants}"
+                        data-th-text="'- ' + ${current.firstName} + ' ' + ${current.lastName}" data-th-value="${current.id}"></option>
+            </select>
+                <!-- Affichage des messages d'erreur par champs -->
+                <div class="cards" data-th-if="${#fields.hasErrors('director')}">
+                    <span data-th-errors="*{director}"></span>
+                </div>
+            </li>
+            <li><label for="inputDuration">Durée : </label> <input
+                    type="number" id="inputDuration" data-th-field="*{duration}"
+                    min="1">
+                <!-- Affichage des messages d'erreur par champs -->
+                <div class="cards" data-th-if="${#fields.hasErrors('duration')}">
+                    <span data-th-errors="*{duration}"></span>
+                </div>
+            </li>
+
+            <li><label for="inputGenre">Genre : </label> <select required
+                                                                 id="inputGenre" data-th-field="*{genre}">
+                <option data-th-each="genre : ${movieGenres}" data-th-text="${genre.label}" data-th-value="${genre.id}"></option>
+            </select>
+                <!-- Affichage des messages d'erreur par champs -->
+                <div class="cards" data-th-if="${#fields.hasErrors('genre')}">
+                    <span data-th-errors="*{genre}"></span>
+                </div>
+            </li>
+
+            <li><label for="taSynopsis">Synopsis : </label> <textarea
+                    rows="3" id="taSynopsis" data-th-field="*{synopsis}"
+                    maxlength="250">
+						</textarea>
+                <!-- Affichage des messages d'erreur par champs -->
+                <div class="cards" data-th-if="${#fields.hasErrors('synopsis')}">
+                    <span data-th-errors="*{synopsis}"></span>
+                </div>
+            </li>
+
+            <li><label
+                    for="selectActors">Acteur(s) : </label> <select data-th-field="*{actors}"
+                                                                    id="selectActors" multiple>
+                <option data-th-each="current : ${movieParticipants}"
+                        data-th-text="'- ' + ${current.firstName} + ' ' + ${current.lastName}" data-th-value="${current.id}"></option>
+            </select></li>
+            <li>
+                <button type="submit">Enregistrer</button>
+            </li>
+        </ul>
+    </form>
+</main>
+</body>
+</html>

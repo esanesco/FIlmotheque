@@ -1,9 +1,23 @@
 package fr.eni.bo;
 
+import org.hibernate.validator.constraints.Range;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+@Entity
 public class Opinion {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @Range(min = 1, max = 5)
     private int note;
+
+    @NotBlank
     private String comment;
+
+    @ManyToOne
     private Member member;
 
     public Opinion() {

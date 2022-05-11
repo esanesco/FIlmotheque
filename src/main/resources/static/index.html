@@ -15,6 +15,15 @@
     <nav>
         <ul>
             <li><a href="/movies">Films</a></li>
+            <th:block data-th-if="${userSession != null}">
+                <li><a href="/movies/addmovie">Nouveau Film</a></li>
+            </th:block>
+            <th:block data-th-if="${userSession == null}">
+                <li><a href="/login">Connexion</a></li>
+            </th:block>
+            <th:block data-th-if="${userSession != null}">
+                <li><a href="/logout">Déconnexion</a></li>
+            </th:block>
         </ul>
     </nav>
 </header>
